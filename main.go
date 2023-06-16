@@ -1,16 +1,27 @@
 package main
 
 import (
+	"diary-api/controler"
 	"diary-api/database"
 	"diary-api/model"
+	"fmt"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	loadEnv()
 	loadDatabase()
+	serveApplication()
+}
+
+func loadEnv() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }
 
 func loadDatabase() {
@@ -19,9 +30,13 @@ func loadDatabase() {
 	database.Database.AutoMigrate(&model.Entry{})
 }
 
-func loadEnv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+func serveApplication() {
+	router := gin.Default()
+
+	publicRoutes := router.Group("/auth")
+	publicRoutes.POST("/register", controler.Register)
+	publicRoutes.POST("/login", controler.Login)
+
+	router.Run(":8000")
+	fmt.Println("Server running on port 8000")
 }
