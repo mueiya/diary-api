@@ -3,6 +3,7 @@ package main
 import (
 	"diary-api/controler"
 	"diary-api/database"
+	"diary-api/middleware"
 	"diary-api/model"
 	"fmt"
 	"log"
@@ -36,6 +37,11 @@ func serveApplication() {
 	publicRoutes := router.Group("/auth")
 	publicRoutes.POST("/register", controler.Register)
 	publicRoutes.POST("/login", controler.Login)
+
+	protectedRoutes := router.Group("/api")
+	protectedRoutes.Use(middleware.JWTAuthMiddleware())
+	protectedRoutes.POST("/entry", controler.AddEntry)
+	protectedRoutes.GET("/entry", controler.GetAllEntries)
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")
