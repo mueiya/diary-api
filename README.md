@@ -1,0 +1,2 @@
+#RESTful API using Golang and Gin
+Disclaimer: This project is for educational purposes only. I do not claim any ownership or responsibility for the code or content of this project. All credit goes to the original author and source at https://www.twilio.com/blog/build-restful-api-using-golang-and-gin.
